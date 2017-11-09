@@ -82,7 +82,7 @@ namespace Alterius.SimpleOption.UnitTests
         }
 
         [Fact]
-        public void Some_WithImplicitCastValue_ReturnsSome()
+        public void ImplicitCastValue_ReturnsSome()
         {
             //Arrange
             Option<string> option = "test";
@@ -97,7 +97,7 @@ namespace Alterius.SimpleOption.UnitTests
         }
 
         [Fact]
-        public void Some_WithImplicitCastException_ReturnsNoneAndException()
+        public void ImplicitCastException_ReturnsNoneAndException()
         {
             //Arrange
             Option<string> option = new NullReferenceException();
@@ -115,6 +115,13 @@ namespace Alterius.SimpleOption.UnitTests
             //Assert
             Assert.Equal(none, result);
             Assert.IsType<NullReferenceException>(exResult);
+        }
+
+        [Fact]
+        public void ImplicitCastException_ThrowsNullReferenceException()
+        {
+            //Assert
+            Assert.Throws<ArgumentNullException>(() => { Option<string> result = (Exception)null; });
         }
     }
 }
