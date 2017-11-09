@@ -43,6 +43,18 @@ namespace Alterius.SimpleOption
             if (HasSome) some(_value); else none();
         }
 
+        public Option<T> Some(Action<T> some)
+        {
+            if (HasSome) some(_value);
+            return this;
+        }
+
+        public Option<T> None(Action<Exception> none)
+        {
+            if (!HasSome) none(_ex);
+            return this;
+        }
+
         public static implicit operator Option<T>(T value)
         {
             return Option.Some(value);
