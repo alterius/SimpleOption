@@ -33,11 +33,12 @@ namespace Alterius.SimpleOption.UnitTests
             Exception exResult = null;
             var result = option.Match(
                 s => some,
-                e =>
-                {
-                    exResult = e;
-                    return none;
-                });
+                n => n
+                    .IsTypeOf<NullReferenceException>(e => {
+                        exResult = e;
+                        return none;
+                    })
+                    .Else(() => some));
 
             //Assert
             Assert.Equal(none, result);
@@ -106,11 +107,11 @@ namespace Alterius.SimpleOption.UnitTests
             Exception exResult = null;
             var result = option.Match(
                 s => some,
-                e =>
-                {
-                    exResult = e;
-                    return none;
-                });
+                n => n
+                    .IsTypeOf<NullReferenceException>(e => {
+                        exResult = e;
+                        return none; })
+                    .Else(() => some));
 
             //Assert
             Assert.Equal(none, result);

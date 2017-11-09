@@ -23,9 +23,9 @@ namespace Alterius.SimpleOption
             _some = false;
         }
 
-        public TResult Match<TResult>(Func<T, TResult> some, Func<Exception, TResult> none)
+        public TResult Match<TResult>(Func<T, TResult> some, Func<ExceptionHelper<TResult>, TResult> none)
         {
-            return HasSome ? some(_value) : none(_ex);
+            return HasSome ? some(_value) : none(new ExceptionHelper<TResult>(_ex));
         }
 
         public TResult Match<TResult>(Func<T, TResult> some, Func<TResult> none)
