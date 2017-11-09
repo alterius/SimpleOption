@@ -9,14 +9,14 @@ namespace Alterius.SimpleOption
         private readonly bool _some;
         public bool HasSome => _some && _value != null;
 
-        private Option(T value)
+        public Option(T value)
         {
             _value = value;
             _ex = null;
             _some = true;
         }
 
-        private Option(Exception ex)
+        public Option(Exception ex)
         {
             _value = default(T);
             _ex = ex ?? throw new ArgumentNullException(nameof(ex));
@@ -43,29 +43,32 @@ namespace Alterius.SimpleOption
             if (HasSome) some(_value); else none();
         }
 
-        public static Option<T> None()
-        {
-            return new Option<T>();
-        }
-
-        public static Option<T> None(Exception ex)
-        {
-            return new Option<T>(ex);
-        }
-
-        public static Option<T> Some(T value)
-        {
-            return new Option<T>(value);
-        }
-
         public static implicit operator Option<T>(T value)
         {
-            return Some(value);
+            return Option.Some(value);
         }
 
         public static implicit operator Option<T>(Exception ex)
         {
-            return None(ex);
+            return Option.None<T>(ex);
+        }
+    }
+
+    public class Option
+    {
+        public static Option<T> None<T>()
+        {
+            return new Option<T>();
+        }
+
+        public static Option<T> None<T>(Exception ex)
+        {
+            return new Option<T>(ex);
+        }
+
+        public static Option<T> Some<T>(T value)
+        {
+            return new Option<T>(value);
         }
     }
 }
