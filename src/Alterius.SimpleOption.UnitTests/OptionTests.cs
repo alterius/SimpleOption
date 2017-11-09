@@ -17,7 +17,7 @@ namespace Alterius.SimpleOption.UnitTests
             //Act
             var result = option.Match(
                 s => some,
-                n => none);
+                () => none);
 
             //Assert
             Assert.Equal(none, result);
@@ -134,7 +134,7 @@ namespace Alterius.SimpleOption.UnitTests
             string result = null;
             option
                 .Some(s => { result = some; })
-                .None(n => { result = none; });
+                .None(e => { result = none; });
 
             //Assert
             Assert.Equal(some, result);
@@ -150,7 +150,7 @@ namespace Alterius.SimpleOption.UnitTests
             string result = null;
             option
                 .Some(s => { result = some; })
-                .None(n => { result = none; });
+                .None(e => { result = none; });
 
             //Assert
             Assert.Equal(none, result);
