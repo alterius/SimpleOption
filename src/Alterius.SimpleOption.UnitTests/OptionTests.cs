@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Alterius.SimpleOption.UnitTests
@@ -172,6 +173,36 @@ namespace Alterius.SimpleOption.UnitTests
             //Assert
             Assert.Equal(none, result);
             Assert.IsType<NullReferenceException>(exResult);
+        }
+
+        [Fact]
+        public async Task MatchAsyncSome_ReturnsSome()
+        {
+            //Arrange
+            var option = Option.Some("test");
+
+            //Act
+            var result = await option.Match(
+                s => Task.FromResult(some),
+                e => Task.FromResult(none));
+
+            //Assert
+            Assert.Equal(some, result);
+        }
+
+        [Fact]
+        public async Task MatchAsyncNone_ReturnsNone()
+        {
+            //Arrange
+            var option = Option.None<string>();
+
+            //Act
+            var result = await option.Match(
+                s => Task.FromResult(some),
+                e => Task.FromResult(none));
+
+            //Assert
+            Assert.Equal(none, result);
         }
     }
 }

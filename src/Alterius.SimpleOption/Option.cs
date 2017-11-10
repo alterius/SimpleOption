@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace Alterius.SimpleOption
 {
@@ -28,7 +29,17 @@ namespace Alterius.SimpleOption
             return HasSome ? some(_value) : none(_ex);
         }
 
+        public Task<TResult> Match<TResult>(Func<T, Task<TResult>> some, Func<Exception, Task<TResult>> none)
+        {
+            return HasSome ? some(_value) : none(_ex);
+        }
+
         public TResult Match<TResult>(Func<T, TResult> some, Func<TResult> none)
+        {
+            return HasSome ? some(_value) : none();
+        }
+
+        public Task<TResult> Match<TResult>(Func<T, Task<TResult>> some, Func<Task<TResult>> none)
         {
             return HasSome ? some(_value) : none();
         }
