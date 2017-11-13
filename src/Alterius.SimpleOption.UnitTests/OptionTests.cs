@@ -157,7 +157,7 @@ namespace Alterius.SimpleOption.UnitTests
         }
 
         [Fact]
-        public void FluentInterface_None_ReturnsSome()
+        public void FluentInterface_None_ReturnsNone()
         {
             //Arrange
             var option = Option.None<string>();
