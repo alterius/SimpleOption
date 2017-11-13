@@ -66,6 +66,16 @@ namespace Alterius.SimpleOption
             return this;
         }
 
+        public OptionMatch<T, TResult> Some<TResult>(Func<T, TResult> some)
+        {
+            return new OptionMatch<T, TResult>(this, some);
+        }
+
+        public OptionMatch<T, TResult> None<TResult>(Func<Exception, TResult> none)
+        {
+            return new OptionMatch<T, TResult>(this, none);
+        }
+
         public static implicit operator Option<T>(T value)
         {
             return Option.Some(value);

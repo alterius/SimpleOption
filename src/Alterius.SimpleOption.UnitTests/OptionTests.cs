@@ -157,6 +157,21 @@ namespace Alterius.SimpleOption.UnitTests
         }
 
         [Fact]
+        public void FluentInterface2_Some_ReturnsSome()
+        {
+            //Arrange
+            var option = Option.Some("test");
+
+            //Act
+            var result = option
+                .Some(s => some)
+                .None(e => none);
+
+            //Assert
+            Assert.Equal(some, result);
+        }
+
+        [Fact]
         public void FluentInterface_None_ReturnsNone()
         {
             //Arrange
