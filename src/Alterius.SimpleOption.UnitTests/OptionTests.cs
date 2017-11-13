@@ -83,6 +83,21 @@ namespace Alterius.SimpleOption.UnitTests
         }
 
         [Fact]
+        public void ImplicitCastValue_ReturnsNone()
+        {
+            //Arrange
+            Option<string> option = (string)null;
+
+            //Act
+            var result = option.Match(
+                s => some,
+                e => none);
+
+            //Assert
+            Assert.Equal(none, result);
+        }
+
+        [Fact]
         public void ImplicitCastValue_ReturnsSome()
         {
             //Arrange
