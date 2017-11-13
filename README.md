@@ -6,6 +6,16 @@ A simple option type.
 SimpleOption is a strongly typed alternative to null that helps to avoid null-reference exceptions, model your data more explictly and
 cut down on manual null checks.
 
+## How do I get it?
+
+SimpleOption is available via NuGet:
+
+```
+PM> Install-Package Alterius.SimpleOption 
+```
+
+Or visit: [https://www.nuget.org/packages/Alterius.SimpleOption](https://www.nuget.org/packages/Alterius.SimpleOption)
+
 ## How do I use it?
 
 ### Using the library
