@@ -1,4 +1,5 @@
-# ![SimpleOption](https://raw.githubusercontent.com/alterius/SimpleOption/master/logo.png) SimpleOption
+![SimpleOption](https://raw.githubusercontent.com/alterius/SimpleOption/master/logo.png)
+# SimpleOption
 A simple and easy to use option type for C#.
 
 ## What the hell is this?
