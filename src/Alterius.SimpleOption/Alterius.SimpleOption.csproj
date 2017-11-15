@@ -10,7 +10,7 @@
     <Copyright>Copyright © 2017 James Law</Copyright>
     <PackageTags>Option Optional Some None Exception Null Functional</PackageTags>
     <PackageLicenseUrl>https://github.com/alterius/SimpleOption/blob/master/LICENSE</PackageLicenseUrl>
-    <PackageIconUrl>https://raw.githubusercontent.com/alterius/SimpleOption/master/icon/icon.png</PackageIconUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/alterius/SimpleOption/master/icons/icon.png</PackageIconUrl>
   </PropertyGroup>
 
 </Project>
