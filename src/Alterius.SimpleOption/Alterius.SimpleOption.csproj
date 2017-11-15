@@ -4,7 +4,7 @@
     <TargetFrameworks>netstandard1.0;net40</TargetFrameworks>
     <Authors>James Law</Authors>
     <Company>Alterius Systems Limited</Company>
-    <Description>A simple option type.</Description>
+    <Description>A simple and easy to use option type for C#.</Description>
     <PackageProjectUrl>https://github.com/alterius/SimpleOption</PackageProjectUrl>
     <RepositoryUrl>https://github.com/alterius/SimpleOption</RepositoryUrl>
     <Copyright>Copyright © 2017 James Law</Copyright>
