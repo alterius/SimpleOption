@@ -14,13 +14,13 @@ SimpleOption is available via NuGet package manager:
 PM> Install-Package Alterius.SimpleOption
 ```
 
-Or via .NET CLI
+Or via .NET CLI:
 
 ```
 > dotnet add package Alterius.SimpleOption
 ```
 
-Or visit: [https://www.nuget.org/packages/Alterius.SimpleOption](https://www.nuget.org/packages/Alterius.SimpleOption)
+Or visit [https://www.nuget.org/packages/Alterius.SimpleOption](https://www.nuget.org/packages/Alterius.SimpleOption)
 
 ## How do I use it?
 
