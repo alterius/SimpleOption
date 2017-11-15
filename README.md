@@ -8,10 +8,16 @@ cut down on manual null checks.
 
 ## How do I get it?
 
-SimpleOption is available via NuGet:
+SimpleOption is available via NuGet package manager:
 
 ```
-PM> Install-Package Alterius.SimpleOption 
+PM> Install-Package Alterius.SimpleOption
+```
+
+Or via .NET CLI
+
+```
+> dotnet add package Alterius.SimpleOption
 ```
 
 Or visit: [https://www.nuget.org/packages/Alterius.SimpleOption](https://www.nuget.org/packages/Alterius.SimpleOption)
@@ -88,7 +94,7 @@ return option.Match<IActionResult>(
     });
 ```
 
-Please bear in mind that accessing the value of Exception (e) can result in a NullReferenceException being thrown if there was no exception passed to the Option and the option is none.
+Please bear in mind that accessing the value of Exception (e) can result in a NullReferenceException being thrown if there is no exception passed to the Option and the option is none.
 
 Usage as a method parameter:
 
