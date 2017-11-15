@@ -1,5 +1,5 @@
 # SimpleOption
-A simple option type.
+A simple and easy to use option type for C#.
 
 ## What the hell is this?
 
@@ -46,6 +46,27 @@ option = new Exception();
 option = "Something";
 ```
 
+Usage as a method return type:
+
+```csharp
+public Option<string> GetString(object obj)
+{
+    if (obj == null)
+    {
+        return new ArgumentNullException(nameof(obj));
+    }
+    
+    var str = _someRepo.GetString(obj);
+    
+    if (str == null)
+    {
+        return Option.None<string>();
+    }
+
+    return str;
+}
+```
+
 ### Retrieving values
 
 A basic example when retuning an IActionResult in a WebApi controller:
@@ -67,4 +88,15 @@ return option.Match<IActionResult>(
     });
 ```
 
-Please bear in mind that when accessing the value of the Exception (e) that this can result in a NullReferenceException being thrown if there was no exception passed to the Option and the option is none.
+Please bear in mind that accessing the value of Exception (e) can result in a NullReferenceException being thrown if there was no exception passed to the Option and the option is none.
+
+Usage as a method parameter:
+
+```csharp
+public bool HasString(Option<object> obj)
+{
+    return obj.Match(
+        some => string.IsNullOrEmpty(some.ToString()),
+        none => false);
+}
+```
