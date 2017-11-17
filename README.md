@@ -75,7 +75,7 @@ public Option<string> GetString(object obj)
 }
 ```
 
-### Retrieving values
+### Retrieving values from Option\<T>
 
 Retrieving values is achieved by using the ```Match()``` method and its various overloads.
 
@@ -95,9 +95,9 @@ return option.Match<IActionResult>(
     () => NotFound());
 ```
 
-> Please note that in this example I'm declaring ```TResult``` explicitly, as ```Ok()``` and ```NotFound()``` do not return the same type, even though they both return an implementation ```IActionResult```. This is not necessary under normal circumstances when the return types are the same.
+> Please note that in this example ```TResult``` is declared explicitly, as ```Ok()``` and ```NotFound()``` do not return the same type, even though they both return an implementation of ```IActionResult```. This is not necessary under normal circumstances when the return types are identical.
 
-Making use of the exception option can allow you to pass and handle application faults without the cost of throwing exceptions:
+Passing an instance of an exception to ```Option<T>``` can allow you to pass and handle application faults without the cost of throwing the exception:
 
 ```csharp
 return option.Match<IActionResult>(
@@ -120,6 +120,7 @@ public bool HasString(Option<object> obj)
         () => false);
 }
 ```
+
 ### Fluent interface (v1.0.0.1+)
 
 A fluent interface is available as an alternative to the ```Match()``` method in version 1.0.0.1 and upwards:
