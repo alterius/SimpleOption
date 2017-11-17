@@ -9,6 +9,7 @@ namespace Alterius.SimpleOption.UnitTests
         private const string test = "TEST";
         private const string some = "SOME";
         private const string none = "NONE";
+        private readonly Exception exception = new TestException();
 
         [Fact]
         public void None_ReturnsNone()
@@ -45,7 +46,7 @@ namespace Alterius.SimpleOption.UnitTests
         public void None_WithException_ReturnsNoneAndException()
         {
             //Arrange
-            var option = Option.None<string>(new NullReferenceException());
+            var option = Option.None<string>(exception);
 
             //Act
             Exception exResult = null;
@@ -59,14 +60,15 @@ namespace Alterius.SimpleOption.UnitTests
 
             //Assert
             Assert.Equal(none, result);
-            Assert.IsType<NullReferenceException>(exResult);
+            Assert.IsType<TestException>(exResult);
+            Assert.Equal(exception, exResult);
         }
 
         [Fact]
         public void None_WithExceptionNoReturn_ReturnsNoneAndException()
         {
             //Arrange
-            var option = Option.None<string>(new NullReferenceException());
+            var option = Option.None<string>(exception);
 
             //Act
             Exception exResult = null;
@@ -81,7 +83,8 @@ namespace Alterius.SimpleOption.UnitTests
 
             //Assert
             Assert.Equal(none, result);
-            Assert.IsType<NullReferenceException>(exResult);
+            Assert.IsType<TestException>(exResult);
+            Assert.Equal(exception, exResult);
         }
 
         [Fact]
@@ -171,7 +174,7 @@ namespace Alterius.SimpleOption.UnitTests
         public void ImplicitCastException_ReturnsNoneAndException()
         {
             //Arrange
-            Option<string> option = new NullReferenceException();
+            Option<string> option = exception;
 
             //Act
             Exception exResult = null;
@@ -185,7 +188,8 @@ namespace Alterius.SimpleOption.UnitTests
 
             //Assert
             Assert.Equal(none, result);
-            Assert.IsType<NullReferenceException>(exResult);
+            Assert.IsType<TestException>(exResult);
+            Assert.Equal(exception, exResult);
         }
 
         [Fact]
@@ -291,7 +295,7 @@ namespace Alterius.SimpleOption.UnitTests
         public void FluentInterface_WithException_None_ReturnsNoneAndException()
         {
             //Arrange
-            var option = Option.None<string>(new NullReferenceException());
+            var option = Option.None<string>(exception);
 
             //Act
             string result = null;
@@ -302,14 +306,15 @@ namespace Alterius.SimpleOption.UnitTests
 
             //Assert
             Assert.Equal(none, result);
-            Assert.IsType<NullReferenceException>(exResult);
+            Assert.IsType<TestException>(exResult);
+            Assert.Equal(exception, exResult);
         }
 
         [Fact]
         public void FluentInterface_WithExceptionAndReturn_None_ReturnsNoneAndException()
         {
             //Arrange
-            var option = Option.None<string>(new NullReferenceException());
+            var option = Option.None<string>(exception);
 
             //Act
             Exception exResult = null;
@@ -319,14 +324,15 @@ namespace Alterius.SimpleOption.UnitTests
 
             //Assert
             Assert.Equal(none, result);
-            Assert.IsType<NullReferenceException>(exResult);
+            Assert.IsType<TestException>(exResult);
+            Assert.Equal(exception, exResult);
         }
 
         [Fact]
         public async Task FluentInterface_WithExceptionAndReturn_AsyncNone_ReturnsNoneAndException()
         {
             //Arrange
-            var option = Option.None<string>(new NullReferenceException());
+            var option = Option.None<string>(exception);
 
             //Act
             Exception exResult = null;
@@ -336,7 +342,8 @@ namespace Alterius.SimpleOption.UnitTests
 
             //Assert
             Assert.Equal(none, result);
-            Assert.IsType<NullReferenceException>(exResult);
+            Assert.IsType<TestException>(exResult);
+            Assert.Equal(exception, exResult);
         }
 
         [Fact]
@@ -373,7 +380,7 @@ namespace Alterius.SimpleOption.UnitTests
         public async Task AsyncNone_WithException_ReturnsNone()
         {
             //Arrange
-            var option = Option.None<string>(new NullReferenceException());
+            var option = Option.None<string>(exception);
 
             //Act
             Exception exResult = null;
@@ -383,7 +390,8 @@ namespace Alterius.SimpleOption.UnitTests
 
             //Assert
             Assert.Equal(none, result);
-            Assert.IsType<NullReferenceException>(exResult);
+            Assert.IsType<TestException>(exResult);
+            Assert.Equal(exception, exResult);
         }
     }
 }
