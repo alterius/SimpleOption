@@ -28,13 +28,13 @@ Or visit [https://www.nuget.org/packages/Alterius.SimpleOption](https://www.nuge
 
 ### Getting started
 
-To use SimpleOption simply import the following namespace:
+To use SimpleOption reference ```Alterius.SimpleOption.dll``` and import the following namespace:
 
 ```csharp
 using Alterius.SimpleOption;
 ```
 
-### Initialising an instance of Option\<T\>
+### Initialising an instance of Option\<T>
 
 Using static constructors:
 
