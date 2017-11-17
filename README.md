@@ -1,5 +1,7 @@
 ![SimpleOption](https://raw.githubusercontent.com/alterius/SimpleOption/master/logo.png)
+
 # SimpleOption
+
 A simple and easy to use option type for C#.
 
 ## What the hell is this?
@@ -25,7 +27,7 @@ Or visit [https://www.nuget.org/packages/Alterius.SimpleOption](https://www.nuge
 
 ## How do I use it?
 
-### Using the library
+### Getting started
 
 To use SimpleOption simply import the following namespace:
 
@@ -76,12 +78,14 @@ public Option<string> GetString(object obj)
 
 ### Retrieving values
 
-A basic example when retuning an IActionResult in a WebApi controller:
+Retrieving values is achieved by using the ```Match()``` method and its various overloads.
+
+Here's a basic example when retuning an IActionResult in a WebApi controller:
 
 ```csharp
 return option.Match<IActionResult>(
     some => Ok(some),
-    NotFound());
+    () => NotFound());
 ```
 
 Taking advantage of the exception option:
@@ -95,15 +99,35 @@ return option.Match<IActionResult>(
     });
 ```
 
-Please bear in mind that accessing the value of Exception (e) can result in a NullReferenceException being thrown if there is no exception passed to the Option and the option is none.
+Warning! Accessing the value of Exception (e) can result in a ```NullReferenceException``` if there is no exception passed to the option and the result is none.
 
-Usage as a method parameter:
+Using it as a method parameter:
 
 ```csharp
 public bool HasString(Option<object> obj)
 {
     return obj.Match(
         some => string.IsNullOrEmpty(some.ToString()),
-        none => false);
+        () => false);
 }
 ```
+### Fluent interface (v1.0.0.1+)
+
+A fluent interface is available as an alternative to the ```Match()``` method in version 1.0.0.1 and upwards:
+
+```csharp
+return option
+    .Some(some => Ok(some))
+    .None(() => NotFound());
+```
+
+```csharp
+return option
+    .Some(some => Ok(some))
+    .None(e => {
+        if (e is NotFoundException) return NotFond();
+        return BadRequest();
+    });
+```
+
+It's not recommended to mix the fluent interface with the ```Match()``` method as it'll probably get confusing. Pick one style and stick with it.
