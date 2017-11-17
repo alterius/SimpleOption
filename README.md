@@ -4,10 +4,9 @@
 
 A simple and easy to use option type for C#.
 
-## What the hell is this?
+## What is it?
 
-SimpleOption is a strongly typed alternative to null that helps to avoid null-reference exceptions, model your data more explictly and
-cut down on manual null checks.
+SimpleOption is a strongly typed alternative to null that helps to avoid null-reference exceptions, model your data more explictly and cut down on manual null checks.
 
 ## How do I get it?
 
@@ -35,7 +34,7 @@ To use SimpleOption simply import the following namespace:
 using Alterius.SimpleOption;
 ```
 
-### Initialising an instance of the option type
+### Initialising an instance of Option\<T\>
 
 Using static constructors:
 
@@ -55,7 +54,7 @@ option = new Exception();
 option = "Something";
 ```
 
-Usage as a method return type:
+Using ```Option<T>``` as a method return type:
 
 ```csharp
 public Option<string> GetString(object obj)
@@ -80,7 +79,15 @@ public Option<string> GetString(object obj)
 
 Retrieving values is achieved by using the ```Match()``` method and its various overloads.
 
-Here's a basic example when retuning an IActionResult in a WebApi controller:
+A basic example:
+
+```csharp
+int x = option.Match(
+    some => some + 1,
+    () => -1);
+```
+
+A good use of ```Option<T>``` is when retuning an ```IActionResult``` in a WebApi controller:
 
 ```csharp
 return option.Match<IActionResult>(
@@ -88,7 +95,9 @@ return option.Match<IActionResult>(
     () => NotFound());
 ```
 
-Taking advantage of the exception option:
+> Please note that in this example I'm declaring ```TResult``` explicitly, as ```Ok()``` and ```NotFound()``` do not return the same type, even though they both return an implementation ```IActionResult```. This is not necessary under normal circumstances when the return types are the same.
+
+Making use of the exception option can allow you to pass and handle application faults without the cost of throwing exceptions:
 
 ```csharp
 return option.Match<IActionResult>(
@@ -99,9 +108,9 @@ return option.Match<IActionResult>(
     });
 ```
 
-Warning! Accessing the value of Exception (e) can result in a ```NullReferenceException``` if there is no exception passed to the option and the result is none.
+> Warning! Accessing the value of Exception (e) can result in a ```NullReferenceException``` if there is no exception passed to the option and the result is none.
 
-Using it as a method parameter:
+Using ```Option<T>``` as a method parameter:
 
 ```csharp
 public bool HasString(Option<object> obj)
@@ -116,8 +125,14 @@ public bool HasString(Option<object> obj)
 A fluent interface is available as an alternative to the ```Match()``` method in version 1.0.0.1 and upwards:
 
 ```csharp
+int x = option
+    .Some(some => some + 1)
+    .None(() => -1);
+```
+
+```csharp
 return option
-    .Some(some => Ok(some))
+    .Some<IActionResult>(some => Ok(some))
     .None(() => NotFound());
 ```
 
@@ -130,4 +145,4 @@ return option
     });
 ```
 
-It's not recommended to mix the fluent interface with the ```Match()``` method as it'll probably get confusing. Pick one style and stick with it.
+> It's not recommended to mix the fluent interface with the ```Match()``` method as it'll probably get confusing. Pick one style and stick with it.
