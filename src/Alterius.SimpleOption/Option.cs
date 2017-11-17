@@ -10,14 +10,14 @@ namespace Alterius.SimpleOption
         private readonly bool _some;
         public bool HasSome => _some && _value != null;
 
-        public Option(T value)
+        internal Option(T value)
         {
             _value = value;
             _ex = null;
             _some = true;
         }
 
-        public Option(Exception ex)
+        internal Option(Exception ex)
         {
             _value = default(T);
             _ex = ex ?? throw new ArgumentNullException(nameof(ex));
@@ -60,10 +60,26 @@ namespace Alterius.SimpleOption
             return this;
         }
 
+        public Option<T> None(Action none)
+        {
+            if (!HasSome) none();
+            return this;
+        }
+
         public Option<T> None(Action<Exception> none)
         {
             if (!HasSome) none(_ex);
             return this;
+        }
+
+        public OptionResult<T, TResult> Some<TResult>(Func<T, TResult> some)
+        {
+            return new OptionResult<T, TResult>(this, some);
+        }
+
+        public OptionResult<T, Task<TResult>> Some<TResult>(Func<T, Task<TResult>> some)
+        {
+            return new OptionResult<T, Task<TResult>>(this, some);
         }
 
         public static implicit operator Option<T>(T value)
@@ -79,6 +95,9 @@ namespace Alterius.SimpleOption
 
     public class Option
     {
+        private Option()
+        { }
+
         public static Option<T> None<T>()
         {
             return new Option<T>();
