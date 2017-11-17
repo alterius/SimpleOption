@@ -66,6 +66,12 @@ namespace Alterius.SimpleOption
             return this;
         }
 
+        public Option<T> None(Action none)
+        {
+            if (!HasSome) none();
+            return this;
+        }
+
         public OptionMatch<T, TResult> Some<TResult>(Func<T, TResult> some)
         {
             return new OptionMatch<T, TResult>(this, some);
@@ -74,11 +80,6 @@ namespace Alterius.SimpleOption
         public OptionMatch<T, Task<TResult>> Some<TResult>(Func<T, Task<TResult>> some)
         {
             return new OptionMatch<T, Task<TResult>>(this, some);
-        }
-
-        public OptionMatch<T, TResult> None<TResult>(Func<Exception, TResult> none)
-        {
-            return new OptionMatch<T, TResult>(this, none);
         }
 
         public static implicit operator Option<T>(T value)

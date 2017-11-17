@@ -6,6 +6,7 @@ namespace Alterius.SimpleOption.UnitTests
 {
     public class OptionTests
     {
+        private const string test = "TEST";
         private const string some = "SOME";
         private const string none = "NONE";
 
@@ -19,6 +20,22 @@ namespace Alterius.SimpleOption.UnitTests
             var result = option.Match(
                 s => some,
                 () => none);
+
+            //Assert
+            Assert.Equal(none, result);
+        }
+
+        [Fact]
+        public void None_NoReturn_ReturnsNone()
+        {
+            //Arrange
+            var option = Option.None<string>();
+
+            //Act
+            string result = null;
+            option.Match(
+                s => { result = some; },
+                () => { result = none; });
 
             //Assert
             Assert.Equal(none, result);
@@ -46,6 +63,28 @@ namespace Alterius.SimpleOption.UnitTests
         }
 
         [Fact]
+        public void None_WithExceptionNoReturn_ReturnsNoneAndException()
+        {
+            //Arrange
+            var option = Option.None<string>(new NullReferenceException());
+
+            //Act
+            Exception exResult = null;
+            string result = null;
+            option.Match(
+                s => { result = some; },
+                e =>
+                {
+                    exResult = e;
+                    result = none;
+                });
+
+            //Assert
+            Assert.Equal(none, result);
+            Assert.IsType<NullReferenceException>(exResult);
+        }
+
+        [Fact]
         public void None_WithNullException_ThrowsNullReferenceException()
         {
             //Assert
@@ -56,12 +95,28 @@ namespace Alterius.SimpleOption.UnitTests
         public void Some_ReturnsSome()
         {
             //Arrange
-            var option = Option.Some("test");
+            var option = Option.Some(test);
 
             //Act
             var result = option.Match(
                 s => some,
-                e => none);
+                () => none);
+
+            //Assert
+            Assert.Equal(some, result);
+        }
+
+        [Fact]
+        public void Some_NoReturn_ReturnsSome()
+        {
+            //Arrange
+            var option = Option.Some(test);
+
+            //Act
+            string result = null;
+            option.Match(
+                s => { result = some; },
+                () => { result = none; });
 
             //Assert
             Assert.Equal(some, result);
@@ -76,14 +131,14 @@ namespace Alterius.SimpleOption.UnitTests
             //Act
             var result = option.Match(
                 s => some,
-                e => none);
+                () => none);
 
             //Assert
             Assert.Equal(none, result);
         }
 
         [Fact]
-        public void ImplicitCastValue_ReturnsNone()
+        public void ImplicitCastNull_ReturnsNone()
         {
             //Arrange
             Option<string> option = (string)null;
@@ -91,7 +146,7 @@ namespace Alterius.SimpleOption.UnitTests
             //Act
             var result = option.Match(
                 s => some,
-                e => none);
+                () => none);
 
             //Assert
             Assert.Equal(none, result);
@@ -101,12 +156,12 @@ namespace Alterius.SimpleOption.UnitTests
         public void ImplicitCastValue_ReturnsSome()
         {
             //Arrange
-            Option<string> option = "test";
+            Option<string> option = test;
 
             //Act
             var result = option.Match(
                 s => some,
-                e => none);
+                () => none);
 
             //Assert
             Assert.Equal(some, result);
@@ -144,28 +199,43 @@ namespace Alterius.SimpleOption.UnitTests
         public void FluentInterface_Some_ReturnsSome()
         {
             //Arrange
-            var option = Option.Some("test");
+            var option = Option.Some(test);
 
             //Act
             string result = null;
             option
                 .Some(s => { result = some; })
-                .None(e => { result = none; });
+                .None(() => { result = none; });
 
             //Assert
             Assert.Equal(some, result);
         }
 
         [Fact]
-        public void FluentInterface2_Some_ReturnsSome()
+        public void FluentInterface_WithReturn_Some_ReturnsSome()
         {
             //Arrange
-            var option = Option.Some("test");
+            var option = Option.Some(test);
 
             //Act
             var result = option
                 .Some(s => some)
-                .None(e => none);
+                .None(() => none);
+
+            //Assert
+            Assert.Equal(some, result);
+        }
+
+        [Fact]
+        public async Task FluentInterface_WithReturn_AsyncSome_ReturnsSome()
+        {
+            //Arrange
+            var option = Option.Some(test);
+
+            //Act
+            var result = await option
+                .Some(s => Task.FromResult(some))
+                .None(() => Task.FromResult(none));
 
             //Assert
             Assert.Equal(some, result);
@@ -181,14 +251,44 @@ namespace Alterius.SimpleOption.UnitTests
             string result = null;
             option
                 .Some(s => { result = some; })
-                .None(e => { result = none; });
+                .None(() => { result = none; });
 
             //Assert
             Assert.Equal(none, result);
         }
 
         [Fact]
-        public void FluentInterface_WithException_ReturnsNoneAndException()
+        public void FluentInterface_WithReturn_None_ReturnsNone()
+        {
+            //Arrange
+            var option = Option.None<string>();
+
+            //Act
+            var result = option
+                .Some(s => some)
+                .None(() => none);
+
+            //Assert
+            Assert.Equal(none, result);
+        }
+
+        [Fact]
+        public async Task FluentInterface_WithReturn_AsyncNone_ReturnsNone()
+        {
+            //Arrange
+            var option = Option.None<string>();
+
+            //Act
+            var result = await option
+                .Some(s => Task.FromResult(some))
+                .None(() => Task.FromResult(none));
+
+            //Assert
+            Assert.Equal(none, result);
+        }
+
+        [Fact]
+        public void FluentInterface_WithException_None_ReturnsNoneAndException()
         {
             //Arrange
             var option = Option.None<string>(new NullReferenceException());
@@ -206,22 +306,56 @@ namespace Alterius.SimpleOption.UnitTests
         }
 
         [Fact]
-        public async Task MatchAsyncSome_ReturnsSome()
+        public void FluentInterface_WithExceptionAndReturn_None_ReturnsNoneAndException()
         {
             //Arrange
-            var option = Option.Some("test");
+            var option = Option.None<string>(new NullReferenceException());
+
+            //Act
+            Exception exResult = null;
+            var result = option
+                .Some(s => some)
+                .None(e => { exResult = e; return none; });
+
+            //Assert
+            Assert.Equal(none, result);
+            Assert.IsType<NullReferenceException>(exResult);
+        }
+
+        [Fact]
+        public async Task FluentInterface_WithExceptionAndReturn_AsyncNone_ReturnsNoneAndException()
+        {
+            //Arrange
+            var option = Option.None<string>(new NullReferenceException());
+
+            //Act
+            Exception exResult = null;
+            var result = await option
+                .Some(s => Task.FromResult(some))
+                .None(e => { exResult = e; return Task.FromResult(none); });
+
+            //Assert
+            Assert.Equal(none, result);
+            Assert.IsType<NullReferenceException>(exResult);
+        }
+
+        [Fact]
+        public async Task AsyncSome_ReturnsSome()
+        {
+            //Arrange
+            var option = Option.Some(test);
 
             //Act
             var result = await option.Match(
                 s => Task.FromResult(some),
-                e => Task.FromResult(none));
+                () => Task.FromResult(none));
 
             //Assert
             Assert.Equal(some, result);
         }
 
         [Fact]
-        public async Task MatchAsyncNone_ReturnsNone()
+        public async Task AsyncNone_ReturnsNone()
         {
             //Arrange
             var option = Option.None<string>();
@@ -229,10 +363,27 @@ namespace Alterius.SimpleOption.UnitTests
             //Act
             var result = await option.Match(
                 s => Task.FromResult(some),
-                e => Task.FromResult(none));
+                () => Task.FromResult(none));
 
             //Assert
             Assert.Equal(none, result);
+        }
+
+        [Fact]
+        public async Task AsyncNone_WithException_ReturnsNone()
+        {
+            //Arrange
+            var option = Option.None<string>(new NullReferenceException());
+
+            //Act
+            Exception exResult = null;
+            var result = await option.Match(
+                s => Task.FromResult(some),
+                e => { exResult = e; return Task.FromResult(none); });
+
+            //Assert
+            Assert.Equal(none, result);
+            Assert.IsType<NullReferenceException>(exResult);
         }
     }
 }

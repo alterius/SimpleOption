@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace Alterius.SimpleOption
 {
@@ -8,6 +9,8 @@ namespace Alterius.SimpleOption
 
         private Func<T, TResult> _some;
         private Func<Exception, TResult> _none;
+
+        private Func<TResult> _none2;
 
         public OptionMatch(Option<T> option, Func<T, TResult> some)
         {
@@ -21,16 +24,16 @@ namespace Alterius.SimpleOption
             _none = none;
         }
 
-        public TResult Some(Func<T, TResult> some)
-        {
-            _some = some;
-            return _option.Match(_some, _none);
-        }
-
         public TResult None(Func<Exception, TResult> none)
         {
             _none = none;
             return _option.Match(_some, _none);
+        }
+
+        public TResult None(Func<TResult> none)
+        {
+            _none2 = none;
+            return _option.Match(_some, _none2);
         }
     }
 }
