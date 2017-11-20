@@ -95,20 +95,20 @@ return option.Match<IActionResult>(
     () => NotFound());
 ```
 
-> Please note that in this example ```TResult``` is declared explicitly, as ```Ok()``` and ```NotFound()``` do not return the same type, even though they both return an implementation of ```IActionResult```. This is not necessary under normal circumstances when the return types are identical.
+> Please note that in this example ```TResult``` is declared explicitly as ```Ok()``` and ```NotFound()``` do not return the same type, even though they both return an implementation of ```IActionResult```. This is not necessary under normal circumstances when the return types are identical.
 
-Passing an instance of an exception to ```Option<T>``` can allow you to pass and handle application faults without the cost of throwing the exception:
+Passing an instance of an exception to ```Option<T>``` allows you to handle application faults without the cost of throwing the exception:
 
 ```csharp
 return option.Match<IActionResult>(
     some => Ok(some),
     e => {
-        if (e is NotFoundException) return NotFond();
+        if (e is NotFoundException) return NotFound();
         return BadRequest();
     });
 ```
 
-> Warning! Accessing the value of Exception (e) can result in a ```NullReferenceException``` if there is no exception passed to the option and the result is none.
+> Warning! Accessing the value of the exception ```(e)``` can result in a ```NullReferenceException``` if there is no exception passed to the option and the result of the exception ```Match()``` is none.
 
 Using ```Option<T>``` as a method parameter:
 
@@ -141,7 +141,7 @@ return option
 return option
     .Some(some => Ok(some))
     .None(e => {
-        if (e is NotFoundException) return NotFond();
+        if (e is NotFoundException) return NotFound();
         return BadRequest();
     });
 ```
