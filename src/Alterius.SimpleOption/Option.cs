@@ -8,18 +8,17 @@ namespace Alterius.SimpleOption
         private readonly T _value;
         private readonly Exception _ex;
         private readonly bool _some;
+
         public bool HasSome => _some && _value != null;
 
-        internal Option(T value)
+        internal Option(T value) : this()
         {
             _value = value;
-            _ex = null;
             _some = true;
         }
 
-        internal Option(Exception ex)
+        internal Option(Exception ex) : this()
         {
-            _value = default(T);
             _ex = ex ?? throw new ArgumentNullException(nameof(ex));
             _some = false;
         }
